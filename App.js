@@ -13,17 +13,24 @@ const App =()=> {
   })
 
   const gestureHandler = useAnimatedGestureHandler({
+    onStart: (event,context) =>{
+      context.startX = progress.value;
+    },
     onActive: event =>{
-      progress.value = event.value;
+      progress.value = event.translationX;
+    },
+    onEnd: (event, context)=>{
+      progress.value=withSpring(0,{
+        velocity:event.velocityX,
+      })
     }
   })
   
   return (
     <View style={styles.container}>
+      <PanGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View style={[styles.box,animatedStyles]}/>
-        <TouchableOpacity style={[styles.text]} onPress={()=>{ progress.value=withSpring(Math.random()*100)}}>
-          <Text style={styles.text}>Touch</Text>
-        </TouchableOpacity>
+      </PanGestureHandler>
     </View>
   )
 }
