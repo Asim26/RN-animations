@@ -5,27 +5,36 @@ import {PanGestureHandler} from 'react-native-gesture-handler'
 
 const App =()=> {
   const progress = useSharedValue(0);
+  const isPanning = useSharedValue(false);
 
-  const animatedStyles = useAnimatedStyle(()=>{
-    return{
-      transform:[{translateX:progress.value}]
-    }
-  })
-
+  
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (event,context) =>{
+      console.log('Animation started...');
       context.startX = progress.value;
     },
     onActive: event =>{
+      console.log('Animation is active...');
+      isPanning.value=true;
       progress.value = event.translationX;
     },
     onEnd: (event, context)=>{
+      console.log('Animation is ended...');
+      isPanning.value=false;
       progress.value=withSpring(0,{
         velocity:event.velocityX,
       })
     }
   })
   
+  const animatedStyles = useAnimatedStyle(()=>{
+    return{
+      backgroundColor: isPanning.value?'red':'green',
+      scale: withSpring(isPanning.value? 4 : 2 ),
+      transform:[{translateX:progress.value}]
+    }
+  })
+
   return (
     <View style={styles.container}>
       <PanGestureHandler onGestureEvent={gestureHandler}>
