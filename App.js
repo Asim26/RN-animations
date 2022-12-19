@@ -30,6 +30,7 @@ const App =()=> {
   const animatedStyles = useAnimatedStyle(()=>{
     return{
       backgroundColor: isPanning.value?'red':'green',
+      opacity: isPanning.value?0.12:1,
       scale: withSpring(isPanning.value? 4 : 2 ),
       transform:[{translateX:progress.value}]
     }
