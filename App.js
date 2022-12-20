@@ -1,36 +1,79 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
-import Animated ,{useAnimatedStyle, useSharedValue, withTiming, withSpring, useAnimatedGestureHandler} from 'react-native-reanimated'
+import Animated ,{
+  Layout,
+  SlideInLeft, SlideInRight,
+  FlipInYRight,FlipInYLeft,
+  BounceInLeft,BounceInRight
+} from 'react-native-reanimated'
 
 const App =()=> {
-  const translateX = useSharedValue(0);
-  const removing = useSharedValue(false);
-
-  const handleRemove = () =>{
-    removing.value = true
-  }
-  
-  
-  const animatedStyles = useAnimatedStyle(()=>{
-    if(removing.value){
-      return{
-        height: withTiming(0),
-        transform:[{translateY: withTiming(-40)}]
-      }  
-    }
-      return{
-        height: withTiming(100),
-        transform:[{translateX: translateX.value}]
-      }
-    
-  })
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.box,animatedStyles]}/>
-      <TouchableOpacity onPress={()=>{handleRemove()}}>
-        <Text>remove</Text>
-      </TouchableOpacity>
+      <Animated.View style={{
+        backgroundColor:'pink',
+        height:100,width:100
+      }} 
+        entering={SlideInLeft.duration(2000)}
+        layout={Layout.springify()}              
+        >
+        <View>
+        </View>
+      </Animated.View>
+
+      <Animated.View style={{
+        backgroundColor:'green',
+        height:100,width:100
+      }} 
+        entering={SlideInRight.duration(2000)}
+        layout={Layout.springify()}              
+        >
+        <View>
+        </View>
+      </Animated.View>
+
+      <Animated.View style={{
+        backgroundColor:'yellow',
+        height:100,width:100
+      }} 
+        entering={FlipInYLeft.duration(2000)}
+        layout={Layout.springify()}              
+        >
+        <View>
+        </View>
+      </Animated.View>
+      <Animated.View style={{
+        backgroundColor:'orange',
+        height:100,width:100
+      }} 
+        entering={FlipInYRight.duration(2000)}
+        layout={Layout.springify()}              
+        >
+        <View>
+        </View>
+      </Animated.View>
+
+      <Animated.View style={{
+        backgroundColor:'red',
+        height:100,width:100
+      }} 
+        entering={BounceInLeft.duration(2000)}
+        layout={Layout.springify()}              
+        >
+        <View>
+        </View>
+      </Animated.View>
+      <Animated.View style={{
+        backgroundColor:'blue',
+        height:100,width:100
+      }} 
+        entering={BounceInRight.duration(2000)}
+        layout={Layout.springify()}              
+        >
+        <View>
+        </View>
+      </Animated.View>
     </View>
   )
 }
@@ -39,7 +82,7 @@ const styles = StyleSheet.create({
   container:{
     marginTop:40,
     // backgroundColor:'blue',
-    flex:1,
+    // flex:1,
     justifyContent:'center',
     alignItems:'center'
   },
