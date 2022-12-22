@@ -1,10 +1,6 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, FlatList} from 'react-native';
-import Animated, {
-  BounceInRight,
-  BounceInLeft,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, FlatList, Text} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 const App = () => {
   const [data, setData] = useState([
@@ -50,35 +46,15 @@ const App = () => {
     },
   ]);
 
-  const checkOddEven = number => {
-    if (number % 2 == 0) {
-      return 'even';
-    } else {
-      return 'odd';
-    }
-  };
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      backgroundColor: 'green',
-      height: 100,
-      marginVertical: 5,
-      marginHorizontal: 5,
-      borderRadius: 20,
-    };
-  });
-
   const renderItem = (index, item) => {
-    checkOddEven(index);
     return (
-      <Animated.View
-        style={animatedStyle}
-        entering={
-          checkOddEven(index) == 'odd'
-            ? BounceInLeft.duration(2000).delay(item * 8000)
-            : BounceInRight.duration(2000).delay(item * 8000)
-        }
-      />
+      <Animatable.View
+        animation={'fadeInUp'}
+        duration={1000}
+        delay={index * 300}
+        style={styles.itemStyle}>
+        <Text style={styles.text}>{index + 1}</Text>
+      </Animatable.View>
     );
   };
 
@@ -87,7 +63,6 @@ const App = () => {
       <FlatList
         data={data}
         keyExtractor={item => item.id}
-        onViewableItemsChanged={() => {}}
         renderItem={({index, item}) => renderItem(index, item)}
       />
     </View>
@@ -97,7 +72,22 @@ const App = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginTop: 40,
+    marginTop: 60,
+    paddingHorizontal: 4,
+  },
+  itemStyle: {
+    backgroundColor: 'green',
+    height: 80,
+    marginVertical: 5,
+    marginHorizontal: 15,
+    borderRadius: 20,
+    flex: 1,
+    width: 360,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    color: 'white',
   },
 });
 
